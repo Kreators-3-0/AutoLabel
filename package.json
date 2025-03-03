@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/taekwan-yoon/AutoLabel/issues"
   },
-  "homepage": "https://github.com/taekwan-yoon/AutoLabel#readme"
+  "homepage": "https://github.com/taekwan-yoon/AutoLabel#readme",
+  "dependencies": {
+    "@google/clasp": "^2.5.0"
+  }
 }

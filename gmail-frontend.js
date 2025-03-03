@@ -1,112 +1,113 @@
 function buildAddOnCard(e) {
+  var card = CardService.newCardBuilder().setHeader(
+    CardService.newCardHeader().setTitle("AI Email Labeler")
+  );
+
+  // if no event data or meta data
   if (!e || !e.messageMetadata) {
-    return CardService.newCardBuilder()
-      .setHeader(CardService.newCardHeader().setTitle("AI Email Labeler"))
+    return card
       .addSection(
-        CardService.newCardSection()
-          .addWidget(
-            CardService.newTextParagraph()
-              .setText("⚠️ Error: No email metadata found. Please open an email.")
+        CardService.newCardSection().addWidget(
+          CardService.newTextParagraph().setText(
+            "⚠️ Error: No email metadata found. Please open an email."
           )
+        )
       )
       .build();
   }
 
+  // if event data or meta data exists
   var messageId = e.messageMetadata.messageId;
-  var classification = classifyEmail(messageId);
+  var classification = generateEmailLabel(messageId);
 
-  var card = CardService.newCardBuilder()
-      .setHeader(CardService.newCardHeader().setTitle("AI Email Labeler"))
-      .addSection(
-          CardService.newCardSection()
-              .addWidget(
-                  CardService.newTextParagraph()
-                      .setText("Email Type: " + classification)
-              )
-              .addWidget(
-                  CardService.newTextButton()
-                      .setText("Apply Label")
-                      .setOnClickAction(
-                          CardService.newAction()
-                              .setFunctionName("applyLabel")
-                              .setParameters({ "messageId": messageId, "label": classification })
-                      )
-              )
-      )
-      .build();
-  return [card];
+  return card
+    .addSection(
+      CardService.newCardSection()
+        .addWidget(
+          CardService.newTextParagraph().setText(
+            "Email Type: " + classification
+          )
+        )
+        .addWidget(
+          CardService.newTextButton()
+            .setText("Apply Label")
+            .setOnClickAction(
+              CardService.newAction()
+                .setFunctionName("applyLabel")
+                .setParameters({ messageId: messageId, label: classification })
+            )
+        )
+    )
+    .build();
 }
 
-function classifyEmail(messageId) {
-    var message = GmailApp.getMessageById(messageId);
-    var body = message.getBody()
+function generateEmailLabel(messageId) {
+  if (!messageId) {
+    Logger.log("Error: No messageId provided.");
+    return "Labeling-Error";
+  }
 
-    var label = getEmailLabelFromAPI(body);
-
-    return label;
+  var emailBody = GmailApp.getMessageById(messageId).getBody();
+  return getEmailLabelFromAPI(emailBody);
 }
 
-function getEmailLabelFromAPI(body) {
+function getEmailLabelFromAPI(emailBody) {
   var url = "https://www.rehabscienceyeg.com/api/email/classify-email/";
 
-  var payload = {
-    "content": body
-  };
+  var payload = { content: emailBody };
 
   var options = {
-    "method": "post", 
-    "contentType": "application/json",
-    "payload": JSON.stringify(payload),
-    "muteHttpExceptions": true  // Prevent script from crashing on error
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true, // Prevent script from crashing on error
   };
 
   var response = UrlFetchApp.fetch(url, options);
+  var responseContent = response.getContentText();
 
-  var statusCode = response.getResponseCode();
-  if (statusCode !== 200) {
-      console.log("Error: " + response.getContentText());
-      return "Error";
+  if (response.getResponseCode() !== 200) {
+    Logger.log("Error: " + responseContent);
+    return "Labeling-Error";
   }
 
-  var responseText = JSON.parse(response.getContentText());
-  
-  // Assuming responseText contains a 'classification' field, and we want to extract the label
+  var responseText = JSON.parse(responseContent);
   var classificationMessage = responseText.classification;
-
-  // Process the classificationMessage to extract just the label name
-  var label = extractLabelFromClassification(classificationMessage);
-  return label;
+  return extractLabelFromClassification(classificationMessage);
 }
 
 function extractLabelFromClassification(classificationMessage) {
-  
+  if (!classificationMessage) { return "Classifying-Error"; }
+
   var labelMatch = classificationMessage.match(/label:\s*(.*)/i);
+
   if (labelMatch && labelMatch[1]) {
-    return labelMatch[1].trim(); 
+    return labelMatch[1].trim();
   } else {
-    return "Unclassified";  // Default label if the pattern doesn't match
+    return "Unclassified";
   }
 }
 
 function applyLabel(e) {
+  // right now, this applies labels to the entire thread based only on the most recent email
   var messageId = e.parameters.messageId;
   var labelName = e.parameters.label;
 
   var message = GmailApp.getMessageById(messageId);
   var thread = message.getThread();
 
-  // Apply the label to the thread
   var label = GmailApp.getUserLabelByName(labelName) || GmailApp.createLabel(labelName);
+  
   thread.addLabel(label);
 
-  // Create a new card with a "refresh" type message
   var card = CardService.newCardBuilder()
     .setHeader(CardService.newCardHeader().setTitle("AI Email Labeler"))
     .addSection(
       CardService.newCardSection()
         .addWidget(
-          CardService.newTextParagraph()
-            .setText("The label '" + labelName + "' has been successfully applied!")
+          CardService.newTextParagraph().setText(
+            "The label '" + labelName + "' has been successfully applied!"
+          )
         )
         .addWidget(
           CardService.newTextButton()
@@ -114,7 +115,7 @@ function applyLabel(e) {
             .setOnClickAction(
               CardService.newAction()
                 .setFunctionName("viewThread")
-                .setParameters({ "threadId": thread.getId() })
+                .setParameters({ threadId: thread.getId() })
             )
         )
     )
@@ -126,8 +127,10 @@ function applyLabel(e) {
 function viewThread(e) {
   var threadId = e.parameters.threadId;
   var thread = GmailApp.getThreadById(threadId);
+  var threadUrl = thread.getPermalink();
 
-  // Navigate to the thread in Gmail
-  return CardService.newNavigation().openLink(thread.getPermalink());
+  return CardService.newActionResponseBuilder()
+    .setOpenLink(CardService.newOpenLink()
+      .setUrl(threadUrl)
+    ).build();
 }
-
