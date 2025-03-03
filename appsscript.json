@@ -1,0 +1,29 @@
+{
+  "timeZone": "America/Edmonton",
+  "dependencies": {
+    "enabledAdvancedServices": [
+      {
+        "userSymbol": "Gmail",
+        "version": "v1",
+        "serviceId": "gmail"
+      }
+    ]
+  },
+  "gmail": {
+    "name": "gmail-ai-poc",
+    "logoUrl": "https://picsum.photos/200",
+    "contextualTriggers": [
+      {
+        "onTriggerFunction": "buildAddOnCard",
+        "unconditional":{}
+      }      
+    ],
+    "primaryColor": "#4285F4",
+    "secondaryColor": "#00BCD4"
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "executionApi": {
+  "access": "ANYONE"
+  }
+}
