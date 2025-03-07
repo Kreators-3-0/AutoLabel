@@ -1,3 +1,4 @@
+// gmail-backend.gs
 function generateEmailLabel(messageId) {
   if (!messageId) {
     Logger.log(ERROR_NO_MESSAGE_ID);
@@ -31,4 +32,19 @@ function addLabelToEmailThread(messageId, labelName) {
   var label = GmailApp.getUserLabelByName(labelName) || GmailApp.createLabel(labelName);
   var thread = getThread(messageId);
   thread.addLabel(label);
+}
+
+function bulkAddLabelToEmailThread(threads) {
+  threads.forEach(function(thread) {
+    var count = thread.getMessageCount();
+    var messageId = thread.getMessages()[count - 1].getId();
+    var labelName = getLabel(messageId);
+
+    var labelObj = GmailApp.getUserLabelByName(labelName);
+    if (!labelObj) {
+      labelObj = GmailApp.createLabel(labelName);
+    }
+
+    thread.addLabel(labelObj);
+  });
 }

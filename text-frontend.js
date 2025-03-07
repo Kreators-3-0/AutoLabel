@@ -1,3 +1,4 @@
+// text-frontend.gs
 const APP_TITLE = "AI Email Labeler";
 const APPLY_LABEL = "Apply Label";
 const PROPOSED_LABEL = "Proposed Label: ";

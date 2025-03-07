@@ -18,6 +18,9 @@
         "unconditional":{}
       }      
     ],
+    "homepageTrigger": {
+      "runFunction": "buildHomePage"
+    },
     "primaryColor": "#4285F4",
     "secondaryColor": "#00BCD4"
   },

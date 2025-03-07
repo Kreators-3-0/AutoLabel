@@ -1,3 +1,4 @@
+// api.gs
 function getEmailLabelFromAPI(emailBody) {
   var payload = { content: emailBody };
 
