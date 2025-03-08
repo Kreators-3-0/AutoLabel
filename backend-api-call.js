@@ -6,7 +6,7 @@ function getEmailLabelFromAPI(emailBody) {
     method: "post",
     contentType: "application/json",
     payload: JSON.stringify(payload),
-    muteHttpExceptions: true, 
+    muteHttpExceptions: true,
   };
 
   var response = UrlFetchApp.fetch(EMAIL_LABEL_API_URL, options);
@@ -18,5 +18,7 @@ function getEmailLabelFromAPI(emailBody) {
   }
 
   var responseText = JSON.parse(responseContent);
-  return responseText.classification;
+  var responseTextClassification = responseText.classification;
+
+  return responseTextClassification;
 }
