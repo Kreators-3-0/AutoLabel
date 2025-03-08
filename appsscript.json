@@ -10,13 +10,13 @@
     ]
   },
   "gmail": {
-    "name": "gmail-ai-poc",
+    "name": "AutoLabel",
     "logoUrl": "https://picsum.photos/200",
     "contextualTriggers": [
       {
         "onTriggerFunction": "buildAddOnCard",
-        "unconditional":{}
-      }      
+        "unconditional": {}
+      }
     ],
     "homepageTrigger": {
       "runFunction": "buildHomePage"
