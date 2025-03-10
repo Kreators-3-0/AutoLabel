@@ -33,7 +33,28 @@ function showApplyLabel(card, classification, messageId) {
                 .setParameters({ messageId: messageId, label: classification })
             )
         )
-    ).build();
+    );
+}
+
+function showDeleteLabelsButton(card, messageId) {
+  return card
+    .addSection(
+      CardService.newCardSection()
+        .addWidget(
+          CardService.newTextParagraph().setText(
+            "Delete all labels for this thread"
+          )
+        )
+        .addWidget(
+          CardService.newTextButton()
+            .setText("Delete labels")
+            .setOnClickAction(
+              CardService.newAction()
+                .setFunctionName("deleteLabelsFromThread")
+                .setParameters({ messageId: messageId})
+            )
+        )
+    )
 }
 
 function showApplyLabelSuccess(labelName) {

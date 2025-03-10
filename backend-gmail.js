@@ -48,3 +48,16 @@ function bulkAddLabelToEmailThread(threads) {
     thread.addLabel(labelObj);
   });
 }
+
+
+//
+function deleteLabelsFromThread(e) {
+  var messageId = e.parameters.messageId;
+  var thread = getThread(messageId);
+
+  var labels = thread.getLabels();
+
+  labels.forEach(function(label) {
+    thread.removeLabel(label);
+  })
+}
