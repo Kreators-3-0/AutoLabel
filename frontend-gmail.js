@@ -1,8 +1,8 @@
 // gmail-frontend.gs
 function showCardWithAppTitle() {
-  return CardService.newCardBuilder().setHeader(
-    CardService.newCardHeader().setTitle(APP_TITLE)
-  );
+  var card = new Card();
+  var cardHeader = new CardHeader();
+  return card.setHeader(cardHeader.setTitle(APP_TITLE));
 }
 
 function showNoEmailData(card) {
