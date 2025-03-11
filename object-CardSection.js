@@ -4,7 +4,7 @@ class CardSection {
         this.card = CardService.newCardSection();
     }
 
-    addWidget(cardTextParagraph) {
-        return this.card.addWidget(cardTextParagraph);
+    addWidget(widget) {
+        return this.card.addWidget(widget);
     }
 }

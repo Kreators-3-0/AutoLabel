@@ -1,12 +1,14 @@
 // gmail-frontend.gs
 function showCardWithAppTitle(card) {
   var cardHeader = new CardHeader();
+
   return card.setHeader(cardHeader.setTitle(APP_TITLE));
 }
 
 function showNoEmailData(card) {
   var cardSection = new CardSection();
   var cardTextParagraph = new CardTextParagraph();
+
   return card
       .addSection(
         cardSection.addWidget(
@@ -16,21 +18,30 @@ function showNoEmailData(card) {
 }
 
 function showApplyLabel(card, classification, messageId) {
+
+  var cardSection = new CardSection();
+  var proposedLabelCard = new CardTextParagraph();
+  var textButton = new TextButton();
+  
   return card
     .addSection(
-      CardService.newCardSection()
+      cardSection
         .addWidget(
-          CardService.newTextParagraph().setText(
+          proposedLabelCard.setText(
             PROPOSED_LABEL + classification
           )
         )
         .addWidget(
-          CardService.newTextButton()
+          textButton
             .setText(APPLY_LABEL)
             .setOnClickAction(
               CardService.newAction()
                 .setFunctionName("applyLabel")
-                .setParameters({ messageId: messageId, label: classification })
+                .setParameters(
+                  { 
+                    messageId: messageId, label: classification 
+                  }
+                )
             )
         )
     );
