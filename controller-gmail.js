@@ -22,18 +22,19 @@ function applyLabel(e) {
   var labelName = e.parameters.label;
   addLabelToEmailThread(messageId, labelName);
 
-  return showApplyLabelSuccess(labelName);
+  return showApplyLabelSuccess(labelName).build();
 }
 
 function buildHomePage(e) {
   var card = new Card();
   card = showCardWithAppTitle(card);
+  card = showBulkLabel(card);
 
-  return showBulkLabel(card);
+  return card.build();
 }
 
 function bulkLabelEmails(e) {
   var threads = GmailApp.search("in:inbox", 0, 3);
   bulkAddLabelToEmailThread(threads);
-  return showApplyBulkLabelSuccess(threads.length);
+  return showApplyBulkLabelSuccess(threads.length).build();
 }

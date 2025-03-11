@@ -78,41 +78,47 @@ function showApplyLabelSuccess(labelName) {
             getLabelSuccessText(labelName)
           )
         )
-    )
-    .build();
+    );
 }
 
 function showBulkLabel(card) {
+  var cardSection = new CardSection();
+  var cardTextParagraph = new CardTextParagraph();
+  var textButton = new TextButton();
+
   card.addSection(
-  CardService.newCardSection()
-    .addWidget(
-      CardService.newTextParagraph().setText(
-        "Click the button below to label your inbox emails in bulk!"
-      )
-    )
-    .addWidget(
-      CardService.newTextButton()
-        .setText("Label My Emails")
-        .setOnClickAction(
-          CardService.newAction()
-            .setFunctionName("bulkLabelEmails") 
+    cardSection
+      .addWidget(
+        cardTextParagraph.setText(
+          "Click the button below to label your inbox emails in bulk!"
         )
-    )
+      )
+      .addWidget(
+        textButton
+          .setText("Label My Emails")
+          .setOnClickAction(
+            CardService.newAction()
+              .setFunctionName("bulkLabelEmails") 
+          )
+      )
   );
-  return card.build();
+  return card;
 }
 
 function showApplyBulkLabelSuccess(count) {
+  var cardHeader = new CardHeader();
+  var cardTextParagraph = new CardTextParagraph();
+  var cardSection = new CardSection();
+
     return CardService.newCardBuilder()
-    .setHeader(CardService.newCardHeader().setTitle(APP_TITLE))
+    .setHeader(cardHeader.setTitle(APP_TITLE))
     .addSection(
-      CardService.newCardSection()
+      cardSection
         .addWidget(
-          CardService.newTextParagraph()
+          cardTextParagraph
             .setText(
               "Labeled " + count + " thread(s)."
             )
         )
-    )
-    .build();
+    );
 }
