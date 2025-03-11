@@ -14,7 +14,7 @@
     "logoUrl": "https://picsum.photos/200",
     "contextualTriggers": [
       {
-        "onTriggerFunction": "buildAddOnCard",
+        "onTriggerFunction": "buildIndividualEmailCard",
         "unconditional": {}
       }
     ],
