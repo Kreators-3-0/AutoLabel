@@ -1,3 +1,4 @@
+// object-CardSection.js
 class CardSection {
     constructor() {
         this.card = CardService.newCardSection();

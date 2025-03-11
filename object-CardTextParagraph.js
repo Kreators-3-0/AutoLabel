@@ -1,3 +1,4 @@
+// object-CardTextParagraph.js
 class CardTextParagraph {
     constructor() {
         this.card = CardService.newTextParagraph();

@@ -2,7 +2,7 @@
 function buildAddOnCard(e) {
   var card = new Card();
   card = showCardWithAppTitle(card);
-  
+
   if (!e || !e.messageMetadata) {
     return showNoEmailData(card).build();
   }
@@ -26,7 +26,8 @@ function applyLabel(e) {
 }
 
 function buildHomePage(e) {
-  var card = showCardWithAppTitle();
+  var card = new Card();
+  card = showCardWithAppTitle(card);
 
   return showBulkLabel(card);
 }
