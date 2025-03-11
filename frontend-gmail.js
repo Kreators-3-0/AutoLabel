@@ -1,11 +1,24 @@
 // gmail-frontend.gs
+
+/**
+ * Sets the app title in the card header.
+ *
+ * @param {Card} card - The card object to set the header on.
+ * @returns {Card} The updated card with the header set.
+ */
 function showCardWithAppTitle(card) {
   var cardHeader = new CardHeader();
 
   return card.setHeader(cardHeader.setTitle(APP_TITLE));
 }
 
-function showNoEmailData(card) {
+/**
+ * Displays a message when no email metadata is available.
+ *
+ * @param {Card} card - The card object to update.
+ * @returns {Card} The updated card with an error message.
+ */
+function showNoEmailDataMessage(card) {
   var cardSection = new CardSection();
   var cardTextParagraph = new CardTextParagraph();
 
@@ -17,7 +30,15 @@ function showNoEmailData(card) {
       );
 }
 
-function showApplyLabel(card, classification, messageId) {
+/**
+ * Adds a button to apply a label to an email.
+ *
+ * @param {Card} card - The card object to update.
+ * @param {string} classification - The classification label to apply.
+ * @param {string} messageId - The ID of the email message.
+ * @returns {Card} The updated card with an apply label button.
+ */
+function showApplyLabelButton(card, classification, messageId) {
 
   var cardSection = new CardSection();
   var proposedLabelCard = new CardTextParagraph();
@@ -36,7 +57,7 @@ function showApplyLabel(card, classification, messageId) {
             .setText(APPLY_LABEL)
             .setOnClickAction(
               CardService.newAction()
-                .setFunctionName("applyLabel")
+                .setFunctionName("labelEmail")
                 .setParameters(
                   { 
                     messageId: messageId, label: classification 
@@ -47,6 +68,13 @@ function showApplyLabel(card, classification, messageId) {
     );
 }
 
+/**
+ * Adds a button to delete all labels from an email thread.
+ *
+ * @param {Card} card - The card object to update.
+ * @param {string} messageId - The ID of the email message.
+ * @returns {Card} The updated card with a delete labels button.
+ */
 function showDeleteLabelsButton(card, messageId) {
   return card
     .addSection(
@@ -61,14 +89,20 @@ function showDeleteLabelsButton(card, messageId) {
             .setText("Delete labels")
             .setOnClickAction(
               CardService.newAction()
-                .setFunctionName("deleteLabelsFromThread")
+                .setFunctionName("deleteAllLabelsFromThread")
                 .setParameters({ messageId: messageId})
             )
         )
     )
 }
 
-function showApplyLabelSuccess(labelName) {
+/**
+ * Displays a success message after applying a label.
+ *
+ * @param {string} labelName - The name of the label that was applied.
+ * @returns {GoogleAppsScript.Card.Card} The card displaying the success message.
+ */
+function showApplyLabelSuccessMessage(labelName) {
   return CardService.newCardBuilder()
     .setHeader(CardService.newCardHeader().setTitle(APP_TITLE))
     .addSection(
@@ -81,7 +115,13 @@ function showApplyLabelSuccess(labelName) {
     );
 }
 
-function showBulkLabel(card) {
+/**
+ * Adds a button for bulk labeling of emails.
+ *
+ * @param {Card} card - The card object to update.
+ * @returns {Card} The updated card with a bulk label button.
+ */
+function showBulkLabelButton(card) {
   var cardSection = new CardSection();
   var cardTextParagraph = new CardTextParagraph();
   var textButton = new TextButton();
@@ -105,20 +145,26 @@ function showBulkLabel(card) {
   return card;
 }
 
-function showApplyBulkLabelSuccess(count) {
+/**
+ * Displays a success message after applying labels to multiple email threads.
+ *
+ * @param {number} count - The number of threads labeled.
+ * @returns {GoogleAppsScript.Card.Card} The card displaying the success message.
+ */
+function showApplyBulkLabelSuccessMessage(count) {
   var cardHeader = new CardHeader();
   var cardTextParagraph = new CardTextParagraph();
   var cardSection = new CardSection();
 
     return CardService.newCardBuilder()
-    .setHeader(cardHeader.setTitle(APP_TITLE))
-    .addSection(
-      cardSection
-        .addWidget(
-          cardTextParagraph
-            .setText(
-              "Labeled " + count + " thread(s)."
-            )
-        )
-    );
+      .setHeader(cardHeader.setTitle(APP_TITLE))
+      .addSection(
+        cardSection
+          .addWidget(
+            cardTextParagraph
+              .setText(
+                "Labeled " + count + " thread(s)."
+              )
+          )
+      );
 }

@@ -1,4 +1,13 @@
 // api.gs
+
+/**
+ * Sends an email body to an external API for classification and retrieves the corresponding label.
+ *
+ * Note: The responseTextClassification needs to be further processed.
+ * 
+ * @param {string} emailBody - The content of the email to be analyzed.
+ * @returns {string} The classification text response returned by the API, or an error label if the request fails.
+ */
 function getEmailLabelFromAPI(emailBody) {
   var payload = { content: emailBody };
 
