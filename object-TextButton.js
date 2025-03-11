@@ -3,7 +3,7 @@ class TextButton {
         this.button = CardService.newTextButton();
     }
 
-    setText() {
+    setText(label) {
         return this.button.setText(label);
     }
 }
