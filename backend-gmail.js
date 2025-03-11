@@ -5,8 +5,12 @@ function generateEmailLabel(messageId) {
     return ERROR_LABEL;
   }
 
-  var emailBody = GmailApp.getMessageById(messageId).getBody();
+  var emailBody = getEmailBodyByMessageId(messageId);
   return getEmailLabelFromAPI(emailBody);
+}
+
+function getEmailBodyByMessageId(messageId) {
+  return GmailApp.getMessageById(messageId).getBody();
 }
 
 function extractLabelFromClassification(classificationMessage) {
@@ -18,7 +22,7 @@ function extractLabelFromClassification(classificationMessage) {
   else { return ERROR_LABEL; }
 }
 
-function getLabel(messageId) {
+function getLabelByMessageId(messageId) {
   var classificationMessage = generateEmailLabel(messageId);
   return extractLabelFromClassification(classificationMessage);
 }
@@ -38,7 +42,7 @@ function bulkAddLabelToEmailThread(threads) {
   threads.forEach(function(thread) {
     var count = thread.getMessageCount();
     var messageId = thread.getMessages()[count - 1].getId();
-    var labelName = getLabel(messageId);
+    var labelName = getLabelByMessageId(messageId);
 
     var labelObj = GmailApp.getUserLabelByName(labelName);
     if (!labelObj) {

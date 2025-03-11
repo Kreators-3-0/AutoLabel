@@ -8,7 +8,7 @@ function buildAddOnCard(e) {
   }
 
   var messageId = e.messageMetadata.messageId;
-  var label = getLabel(messageId);
+  var label = getLabelByMessageId(messageId);
 
   card = showApplyLabel(card, label, messageId);
 
