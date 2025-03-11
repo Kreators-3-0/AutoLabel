@@ -1,18 +1,18 @@
 // gmail-frontend.gs
-function showCardWithAppTitle() {
-  var card = new Card();
+function showCardWithAppTitle(card) {
   var cardHeader = new CardHeader();
   return card.setHeader(cardHeader.setTitle(APP_TITLE));
 }
 
 function showNoEmailData(card) {
+  var cardSection = new CardSection();
+  var cardTextParagraph = new CardTextParagraph();
   return card
       .addSection(
-        CardService.newCardSection().addWidget(
-          CardService.newTextParagraph().setText(ERROR_NO_EMAIL_METADATA)
+        cardSection.addWidget(
+          cardTextParagraph.setText(ERROR_NO_EMAIL_METADATA)
         )
-      )
-      .build();
+      );
 }
 
 function showApplyLabel(card, classification, messageId) {

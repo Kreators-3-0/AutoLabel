@@ -1,8 +1,10 @@
 // gmail-controller.gs
 function buildAddOnCard(e) {
-  var card = showCardWithAppTitle();
+  var card = new Card();
+  card = showCardWithAppTitle(card);
+  
   if (!e || !e.messageMetadata) {
-    return showNoEmailData(card);
+    return showNoEmailData(card).build();
   }
 
   var messageId = e.messageMetadata.messageId;
