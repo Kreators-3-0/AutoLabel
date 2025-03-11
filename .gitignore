@@ -21,5 +21,8 @@ rad.json
 #Test results file
 TestResults.xml
 
+# Node modules
+node_modules/
+
 .clasprc.json
 
