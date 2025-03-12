@@ -1,4 +1,7 @@
 // object-Card.js
+/**
+ * Wrapper class for creating and managing Google Apps Script cards.
+ */
 class Card {
     constructor() {
         this.card = CardService.newCardBuilder();
